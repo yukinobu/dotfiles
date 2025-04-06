@@ -1,0 +1,147 @@
+#!/usr/bin/env -S bash -euET -o pipefail -O inherit_errexit
+
+# http://iandeth.dyndns.org/mt/ian/archives/000651.html
+function share_history {
+	history -a
+	history -c
+	history -r
+}
+PROMPT_COMMAND='share_history'
+shopt -u histappend
+export HISTSIZE=999999
+export HISTFILESIZE=999999
+export HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S [%Z] '
+export HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoreboth
+
+shopt -s nocaseglob
+# https://unix.stackexchange.com/questions/42629/bash-how-do-i-move-my-cursor-to-the-left-a-word-at-a-time
+if [[ $- == *i* ]]; then
+	bind '"\e[1;5C": forward-word'
+	bind '"\e[1;5D": backward-word'
+fi
+[[ -t 0 ]] && stty stop undef && stty start undef
+[[ $(uname) =~ ^CYGWIN ]] && set -o igncr
+
+export EDITOR=vim
+
+alias date="\\date +'%F(%a) %T.%N [%Z]'"
+alias wget='\wget -t 0 -S -c -T 60 --no-use-server-timestamps'
+alias grep='\grep --color -a -i'
+alias rg='\rg --text --ignore-case --glob-case-insensitive'
+alias ge='\grep -R --color -H -n -a -i -E'
+alias gf='\grep -R --color -H -n -a -i -F'
+alias xz='\xz -9'
+alias ip='\ip -s -c'
+alias ssh='\ssh -o ServerAliveInterval=55'
+
+# "start" on Windows cygwin
+[[ $(uname) =~ ^CYGWIN ]] && alias start=cygstart
+
+# "start" on WSL Ubuntu
+if [[ -f /proc/sys/fs/binfmt_misc/WSLInterop ]]; then
+	function start() {
+		[[ -e $1 ]] && arg="$(wslpath -w "$1")" || arg="${1}"
+		explorer.exe "${arg}" 2>/dev/null
+	}
+	export -f start
+fi
+
+# git
+if [[ $(uname) =~ ^CYGWIN ]]; then
+	# shellcheck disable=SC1090
+	if [[ -f $(cygpath -au 'C:\Program Files\Git\mingw64\share\git\completion\git-prompt.sh') ]]; then
+		source "$(cygpath -au 'C:\Program Files\Git\mingw64\share\git\completion\git-prompt.sh')"
+		source "$(cygpath -au 'C:\Program Files\Git\mingw64\share\git\completion\git-completion.bash')"
+		function __git_ps1_cygwin() {
+			local __alias_backup="${BASH_ALIASES[git]}"
+			unalias git
+			__git_ps1 "$@"
+			# shellcheck disable=SC2139
+			alias git="${__alias_backup}"
+		}
+		function __wingit() {
+			local __home_backup="${HOME}"
+			HOME="${USERPROFILE}"
+			/cygdrive/c/Program\ Files/Git/bin/git "$@"
+			HOME="${__home_backup}"
+		}
+		alias git=__wingit
+	else
+		function __git_ps1_cygwin() { :; }
+		function __git_ps1() { :; }
+	fi
+fi
+export GIT_PS1_SHOWDIRTYSTATE=1
+export GIT_PS1_SHOWUPSTREAM=1
+export GIT_PS1_SHOWUNTRACKEDFILES=
+export GIT_PS1_SHOWSTASHSTATE=1
+
+# prompt
+__last_error_prompt() {
+	EXIT_STATUS=$?
+	[[ $EXIT_STATUS -ne 0 ]] && echo "E:${EXIT_STATUS} "
+	return $EXIT_STATUS
+}
+export PROMPT_DIRTRIM=1
+if [[ $(uname) =~ ^CYGWIN ]]; then
+	# shellcheck disable=SC2154
+	export PS1='\[\033[1;31m\]$(__last_error_prompt)\[\033[00m\]${VIRTUAL_ENV_PROMPT}\[\e]0;\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[0;36m\]\h\[\033[90m\]:\[\033[1;34m\]\w\[\033[1;31m\]$(__git_ps1_cygwin)\[\033[00m\]\$ '
+else
+	if [[ ${USER,,} == root || ${USER,,} =~ ^admin ]]; then
+		export PS1='\[\033[1;31m\]$(__last_error_prompt)\[\033[00m\]${VIRTUAL_ENV_PROMPT}\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[1;35m\]\u\[\033[0;90m\]@\[\033[0;36m\]\h\[\033[90m\]:\[\033[1;34m\]\w\[\033[1;31m\]$(__git_ps1)\[\033[00m\]\$ '
+	else
+		export PS1='\[\033[1;31m\]$(__last_error_prompt)\[\033[00m\]${VIRTUAL_ENV_PROMPT}\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[1;32m\]\u\[\033[0;90m\]@\[\033[0;36m\]\h\[\033[90m\]:\[\033[1;34m\]\w\[\033[1;31m\]$(__git_ps1)\[\033[00m\]\$ '
+	fi
+fi
+
+_retry() {
+	local delay='10'
+	while :; do
+		"$@" && break
+		printf "\e[1;33m[${FUNCNAME[0]}]\e[m will retry after %.1f seconds\n" "${delay}" >&2
+		sleep "${delay}"
+		delay=$(echo "${delay} * (1 + ${RANDOM}/32768)" | bc -l)
+	done
+	echo -e "\e[1;36m[${FUNCNAME[0]}]\e[m success on" "$(date)" >&2
+	return 0
+}
+
+if [[ -x $(command -v direnv) ]]; then
+	eval "$(direnv hook bash)"
+fi
+
+if [[ -x $(command -v terraform) ]]; then
+	complete -C "\"$(which terraform)\"" terraform
+fi
+
+if [[ -x $(command -v aws_completer) ]]; then
+	complete -C "\"$(which aws_completer)\"" aws
+fi
+
+if [[ -x $(command -v aws-vault) ]]; then
+	export AWS_VAULT_BACKEND=pass
+	export AWS_VAULT_PASS_PREFIX=aws-vault
+	export AWS_SESSION_TOKEN_TTL=3h
+	GPG_TTY="$(tty)" && export GPG_TTY
+fi
+
+if [[ -x $(command -v brew) ]]; then
+	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+# ssh
+# Use Windows's OpenSSH instead of Cygwin's
+if [[ $(uname) =~ ^CYGWIN ]]; then
+	export PATH="/cygdrive/c/Windows/System32/OpenSSH${PATH+:}${PATH}"
+	unset SSH_AUTH_SOCK
+fi
+# Use Windows's ssh-agent instead of WSL's
+if [[ -f /proc/sys/fs/binfmt_misc/WSLInterop ]]; then
+	export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
+	! ss -a | grep -q $SSH_AUTH_SOCK && rm -f $SSH_AUTH_SOCK && (setsid nohup socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:$HOME/.ssh/wsl2-ssh-pageant.exe >/dev/null 2>&1 &)
+fi
+
+# shellcheck disable=SC1090
+if [[ -v TERM_PROGRAM && $TERM_PROGRAM == vscode ]]; then
+	. "$(code --locate-shell-integration-path bash)"
+fi
