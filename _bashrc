@@ -28,6 +28,9 @@ alias date="\\date +'%F(%a) %T.%N [%Z]'"
 alias wget='\wget -t 0 -S -c -T 60 --no-use-server-timestamps'
 alias grep='\grep --color -a -i'
 alias rg='\rg --text --ignore-case --glob-case-insensitive'
+# shellcheck disable=SC2139
+[[ $(uname) =~ ^CYGWIN || $(uname) =~ ^MINGW ]] && alias rg="${BASH_ALIASES[rg]} --path-separator='\x2F'"
+[[ $(uname) =~ ^CYGWIN || $(uname) =~ ^MINGW ]] && alias fd='\fd --path-separator /'
 alias ge='\grep -R --color -H -n -a -i -E'
 alias gf='\grep -R --color -H -n -a -i -F'
 alias xz='\xz -9'
@@ -62,7 +65,7 @@ if [[ $(uname) =~ ^CYGWIN ]]; then
 		function __wingit() {
 			local __home_backup="${HOME}"
 			HOME="${USERPROFILE}"
-			/cygdrive/c/Program\ Files/Git/bin/git "$@"
+			TZ=JST-9 /cygdrive/c/Program\ Files/Git/bin/git "$@"
 			HOME="${__home_backup}"
 		}
 		alias git=__wingit
