@@ -1,6 +1,11 @@
 " ペーストできない現象の抑止 https://qiita.com/VA_nakatsu/items/b92771fcda9023cb2bb6
 set clipboard=unnamed,autoselect
 
+" screen 上でもマウスホイールを使用したスクロール
+"if has("mouse")
+"  set mouse=a
+"endif
+
 " 文字コードの自動認識 http://www.kawaz.jp/pukiwiki/?vim#cb691f26
 if &encoding !=# 'utf-8'
   set encoding=japan
