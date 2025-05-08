@@ -36,6 +36,8 @@ alias gf='\grep -R --color -H -n -a -i -F'
 alias xz='\xz -9'
 alias ip='\ip -s -c'
 alias ssh='\ssh -o ServerAliveInterval=55'
+# shellcheck disable=SC2139
+alias ts="\\ts $(echo -e '\e[33m')'[%F %H:%M:%.S %z]'$(echo -e '\e[m') | grep --color=always -iE '\[ERROR\]|error|retry|'"
 
 # "start" on Windows cygwin
 [[ $(uname) =~ ^CYGWIN ]] && alias start=cygstart
