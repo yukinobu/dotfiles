@@ -1,0 +1,21 @@
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.py]
+indent_style = space
+indent_size = 4
+
+[Makefile]
+indent_style = tab
+
+[*.{bat,cmd}]
+charset = unset
+
+[*.{bat,cmd,ps1,psm1}]
+end_of_line = crlf
