@@ -130,7 +130,7 @@ if [[ -x $(command -v aws-vault) ]]; then
 	GPG_TTY="$(tty)" && export GPG_TTY
 fi
 
-if [[ -x $(command -v brew) ]]; then
+if [[ -x $(command -v /home/linuxbrew/.linuxbrew/bin/brew) ]]; then
 	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
