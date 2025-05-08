@@ -1,3 +1,6 @@
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+
 " ペーストできない現象の抑止 https://qiita.com/VA_nakatsu/items/b92771fcda9023cb2bb6
 set clipboard=unnamed,autoselect
 
