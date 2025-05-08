@@ -111,6 +111,10 @@ _retry() {
 	return 0
 }
 
+if [[ -x $(command -v /home/linuxbrew/.linuxbrew/bin/brew) ]]; then
+	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 if [[ -x $(command -v direnv) ]]; then
 	eval "$(direnv hook bash)"
 fi
@@ -128,10 +132,6 @@ if [[ -x $(command -v aws-vault) ]]; then
 	export AWS_VAULT_PASS_PREFIX=aws-vault
 	export AWS_SESSION_TOKEN_TTL=3h
 	GPG_TTY="$(tty)" && export GPG_TTY
-fi
-
-if [[ -x $(command -v /home/linuxbrew/.linuxbrew/bin/brew) ]]; then
-	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # ssh
