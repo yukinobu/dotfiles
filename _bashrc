@@ -136,7 +136,7 @@ fi
 
 # ssh
 # Use Windows's OpenSSH instead of Cygwin's
-if [[ $(uname) =~ ^CYGWIN ]]; then
+if [[ $(uname -s) =~ ^CYGWIN ]]; then
 	export PATH="/cygdrive/c/Windows/System32/OpenSSH${PATH+:}${PATH}"
 	unset SSH_AUTH_SOCK
 fi
