@@ -160,3 +160,35 @@ fi
 if [[ -v TERM_PROGRAM && $TERM_PROGRAM == vscode ]]; then
 	. "$(code --locate-shell-integration-path bash)"
 fi
+
+# grep for document/office files
+if [[ $(uname) =~ ^CYGWIN ]]; then
+	function get() {
+		find . -type f \( -iname '*.txt' -or -iname '*.csv' -or -iname '*.tsv' -or -iname '*.log' -or -iname '*.json' -or -iname '*.js' \) | sponge | while read fn; do cs=$(uchardet "${fn}");[ $cs = 'unknown' ] && cs='UTF8'; cat "${fn}" | iconv -c -f "${cs}" -t UTF8 | grep --label="${fn}" -H -n -a -i -E "$1"; done
+	}
+	alias get=get
+	function gex() {
+		find . -type f \( -iname '*.doc' -or -iname '*.docx' -or -iname '*.xls' -or -iname '*.xlsx' -or -iname '*.ppt' -or -iname '*.pptx' -or -iname '*.pdf' -or -iname '*.rtf' -or -iname '*.htm' -or -iname '*.html' -or -iname '*.mht' \) \! -iname '~$*' | sponge | while read fn; do xdoc2txt -8 "${fn}" | grep --label="${fn}" -H -n -a -i -E "$1"; done
+	}
+	alias gex=gex
+	function getx() {
+		get $1
+		gex $1
+	}
+	alias getx=getx
+	alias gext=getx
+	function gft() {
+		find . -type f \( -iname '*.txt' -or -iname '*.csv' -or -iname '*.tsv' -or -iname '*.log' -or -iname '*.json' -or -iname '*.js' \) | sponge | while read fn; do cs=$(uchardet "${fn}");[ $cs = 'unknown' ] && cs='UTF8'; cat "${fn}" | iconv -c -f "${cs}" -t UTF8 | grep --label="${fn}" -H -n -a -i -F "$1"; done
+	}
+	alias gft=gft
+	function gfx() {
+		find . -type f \( -iname '*.doc' -or -iname '*.docx' -or -iname '*.xls' -or -iname '*.xlsx' -or -iname '*.ppt' -or -iname '*.pptx' -or -iname '*.pdf' -or -iname '*.rtf' -or -iname '*.htm' -or -iname '*.html' -or -iname '*.mht' \) \! -iname '~$*' | sponge | while read fn; do xdoc2txt -8 "${fn}" | grep --label="${fn}" -H -n -a -i -F "$1"; done
+	}
+	alias gfx=gfx
+	function gftx() {
+		gft $1
+		gfx $1
+	}
+	alias gftx=gftx
+	alias gfxt=gftx
+fi
