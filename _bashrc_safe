@@ -1,0 +1,7 @@
+#!/usr/bin/env -S bash -euET -o pipefail -O inherit_errexit
+
+# usage: bash --rcfile ~/.bashrc_safe -i
+
+set -euET -o pipefail
+shopt -s inherit_errexit
+PS1='(safe) \u@\h:\w\$ '

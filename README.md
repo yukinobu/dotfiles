@@ -8,5 +8,6 @@ grep -qxF '. ~/local/dotfiles/_bashrc' ~/.bashrc || echo '. ~/local/dotfiles/_ba
 ```
 
 ```bash
+ln -s ~/local/dotfiles/_bashrc_safe ~/.bashrc_safe
 ln -s ~/local/dotfiles/_vimrc ~/.vimrc
 ```
