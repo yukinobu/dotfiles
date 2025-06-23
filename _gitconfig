@@ -1,12 +1,12 @@
 [user]
-    name = Yukinobu Nagayasu
-    email = nagayasu@yukinobu.jp
+	name = Yukinobu Nagayasu
+	email = nagayasu@yukinobu.jp
 [column]
-    ui = auto
+	ui = auto
 [gui]
-    encoding = utf-8
+	encoding = utf-8
 [help]
-    autocorrect = prompt
+	autocorrect = prompt
 [core]
 	fsmonitor = false
 	autocrlf = input
