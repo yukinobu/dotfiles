@@ -2,6 +2,19 @@
 
 # usage: bash --rcfile ~/.bashrc_safe -i
 
+# http://iandeth.dyndns.org/mt/ian/archives/000651.html
+function share_history {
+	history -a
+	history -c
+	history -r
+}
+PROMPT_COMMAND='share_history'
+shopt -u histappend
+export HISTSIZE=999999
+export HISTFILESIZE=999999
+export HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S [%Z] '
+export HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoreboth
+
 set -euET -o pipefail
 shopt -s inherit_errexit
 PS1='(safe) \u@\h:\w\$ '
