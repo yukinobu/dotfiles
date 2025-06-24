@@ -12,6 +12,7 @@
 	autocrlf = input
 	safecrlf = warn
 	excludesfile = ~/.gitignore
+	quotepath = false
 [safe]
 	directory = *
 [credential]
