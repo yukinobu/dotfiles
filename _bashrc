@@ -144,6 +144,11 @@ if [[ -x $(command -v aws-vault) && $(uname -s) == Linux ]]; then
 	GPG_TTY="$(tty)" && export GPG_TTY
 fi
 
+if [[ -x $(command -v kubectl) ]]; then
+	# shellcheck disable=SC1090
+	source <(kubectl completion bash)
+fi
+
 # ssh
 # Use Windows's OpenSSH instead of Cygwin's
 if [[ $(uname -s) =~ ^CYGWIN ]]; then
