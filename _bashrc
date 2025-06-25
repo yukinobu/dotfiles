@@ -149,6 +149,11 @@ if [[ -x $(command -v kubectl) ]]; then
 	source <(kubectl completion bash)
 fi
 
+if [[ -x $(command -v helm) ]]; then
+	# shellcheck disable=SC1090
+	source <(helm completion bash)
+fi
+
 # ssh
 # Use Windows's OpenSSH instead of Cygwin's
 if [[ $(uname -s) =~ ^CYGWIN ]]; then
