@@ -144,6 +144,11 @@ if [[ -x $(command -v aws-vault) && $(uname -s) == Linux ]]; then
 	GPG_TTY="$(tty)" && export GPG_TTY
 fi
 
+if [[ -x $(command -v npm) ]]; then
+	# shellcheck disable=SC1090
+	source <(npm completion)
+fi
+
 if [[ -x $(command -v kubectl) ]]; then
 	# shellcheck disable=SC1090
 	source <(kubectl completion bash)
