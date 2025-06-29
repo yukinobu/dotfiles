@@ -145,6 +145,7 @@ if [[ -x $(command -v aws-vault) && $(uname -s) == Linux ]]; then
 fi
 
 if [[ -x $(command -v npm) ]]; then
+	export PATH="${HOME}/.npm-global/bin${PATH+:}${PATH}"
 	# shellcheck disable=SC1090
 	source <(npm completion)
 fi
