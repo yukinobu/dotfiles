@@ -9,6 +9,8 @@ grep -qxF '. ~/local/dotfiles/_bashrc' ~/.bashrc || echo '. ~/local/dotfiles/_ba
 
 ```bash
 ln -is ~/local/dotfiles/_bashrc_safe ~/.bashrc_safe
+cp -i ~/local/dotfiles/_gitconfig ~/.gitconfig
+ln -is ~/local/dotfiles/_gitignore ~/.gitignore
 ln -is ~/local/dotfiles/_vimrc ~/.vimrc
 cp -i ~/local/dotfiles/_npmrc ~/.npmrc
 ```
