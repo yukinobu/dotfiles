@@ -1,5 +1,11 @@
 # dotfiles
 
+## prerequirements
+
+```bash
+apt install git bash-completion
+```
+
 ## install & update
 
 ```bash
