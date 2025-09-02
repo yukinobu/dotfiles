@@ -43,7 +43,7 @@ alias ts="\\ts $(echo -e '\e[33m')'[%F %H:%M:%.S %z]'$(echo -e '\e[m') | grep --
 [[ $(uname) =~ ^CYGWIN ]] && alias start=cygstart
 
 # "start" on WSL Ubuntu
-if [[ -f /proc/sys/fs/binfmt_misc/WSLInterop ]]; then
+if [[ -f /proc/sys/fs/binfmt_misc/WSLInterop || -f /proc/sys/fs/binfmt_misc/WSLInterop-late ]]; then
 	function start() {
 		[[ -e $1 ]] && arg="$(wslpath -w "$1")" || arg="${1}"
 		explorer.exe "${arg}" 2>/dev/null
@@ -169,7 +169,7 @@ if [[ $(uname -s) =~ ^CYGWIN ]]; then
 	unset SSH_AUTH_SOCK
 fi
 # Use Windows's ssh-agent instead of WSL's
-if [[ -f /proc/sys/fs/binfmt_misc/WSLInterop ]]; then
+if [[ -f /proc/sys/fs/binfmt_misc/WSLInterop || -f /proc/sys/fs/binfmt_misc/WSLInterop-late ]]; then
 	export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
 	! ss -a | grep -q $SSH_AUTH_SOCK && rm -f $SSH_AUTH_SOCK && (setsid nohup socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:$HOME/.ssh/wsl2-ssh-pageant.exe >/dev/null 2>&1 &)
 fi
