@@ -13,4 +13,4 @@ ln -fs ~/local/dotfiles/_gitignore ~/.gitignore
 ln -fs ~/local/dotfiles/_vimrc ~/.vimrc
 
 # shellcheck disable=SC2154
-[[ -f ${containerWorkspaceFolder}.envrc ]] && direnv allow "${containerWorkspaceFolder}"
+[[ -f ${containerWorkspaceFolder}.envrc ]] && direnv allow "${containerWorkspaceFolder}" || true
