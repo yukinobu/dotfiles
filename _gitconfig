@@ -13,6 +13,7 @@
 	safecrlf = warn
 	excludesfile = ~/.gitignore
 	quotepath = false
+	commentChar = ";"
 [safe]
 	directory = *
 [credential]
