@@ -55,6 +55,13 @@
 [reflog]
 	date = iso-local
 	format = %C(auto)%h %gd[%ar]: %gs (%s)
+[pager]
+	diff = delta
+	show = delta
+	log = delta
+	reflog = delta
+[delta]
+	line-numbers = true
 
 [alias]
 	now = "!__f() { \\git commit --all --message \"now: auto commit on $(\\date '+%Y-%m-%d %H:%M [%Z]') by ${USER} at $(hostname)\"; }; __f"
