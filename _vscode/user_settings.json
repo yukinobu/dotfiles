@@ -1,0 +1,207 @@
+{
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.accessibilitySupport": "off",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.fontFamily": "'UDEV Gothic 35JPDOC', VL ゴシック, Consolas, 'Courier New', monospace",
+  "editor.fontSize": 15,
+  "editor.formatOnSave": true,
+  "editor.minimap.enabled": false,
+  "editor.mouseWheelZoom": true,
+  "editor.snippetSuggestions": "top",
+  "editor.stickyScroll.enabled": true,
+  "editor.suggest.preview": true,
+  "editor.suggest.showMethods": true,
+  "editor.unicodeHighlight.nonBasicASCII": false,
+  "editor.wordSeparators": "`~!@#$%^&*()-=+[{]}\\|;:'\",.<>/?（）｛｝「」『』【】［］＜＞　、。・，．",
+
+  "files.autoGuessEncoding": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.DS_Store/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/__pycache__/**": true,
+    "**/.mypy_cache/**": true,
+    "**/.venv/**": true,
+    "**/.tmp/**": true,
+    "**/.cache/**": true
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/.mypy_cache": true,
+    "**/.venv": true,
+    "**/.tmp": true,
+    "**/.cache": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/.mypy_cache": true,
+    "**/.venv": true,
+    "**/.tmp": true,
+    "**/.cache": true
+  },
+
+  "extensions.ignoreRecommendations": true,
+
+  "git.countBadge": "tracked",
+  "git.openRepositoryInParentFolders": "always",
+  "git.autofetch": true,
+  "git.blame.editorDecoration.enabled": true,
+
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.rightClickBehavior": "paste",
+  "terminal.integrated.shellIntegration.enabled": true,
+  "terminal.integrated.defaultProfile.windows": "Cygwin",
+  "terminal.integrated.profiles.windows": {
+    "Cygwin": {
+      "overrideName": true,
+      "path": "C:\\cygwin64\\bin\\env.exe",
+      "args": ["CHERE_INVOKING=t", "/bin/bash", "-i", "-l"],
+      "icon": "terminal-bash"
+    }
+  },
+
+  "todo-tree.general.showActivityBarBadge": true,
+
+  "window.commandCenter": false,
+
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll": "explicit"
+    }
+  },
+  "python.analysis.typeCheckingMode": "standard",
+  "isort.args": ["--line-length", "8192"],
+  "isort.importStrategy": "useBundled",
+  "flake8.args": [
+    "--ignore",
+    "E203,E266,E501,E701,E704,W503,B905,B907",
+    "--max-line-length",
+    "8192",
+    "--max-complexity",
+    "18",
+    "--select",
+    "B,C,E,F,W,T4,B9,N,S,SIM,ARG,PTH"
+  ],
+  "flake8.importStrategy": "useBundled",
+  "black-formatter.importStrategy": "useBundled",
+  "mypy-type-checker.importStrategy": "useBundled",
+  "mypy-type-checker.args": ["--follow-untyped-imports"],
+  "ruff.lint.select": ["B", "E", "F", "W", "N", "C4", "UP", "ARG", "PTH"],
+  "ruff.lint.ignore": ["E203", "E266", "E501", "E701", "B905"],
+  "ruff.importStrategy": "useBundled",
+
+  "python.languageServer": "Pylance",
+  "python.terminal.activateEnvironment": true,
+
+  "[javascript][javascriptreact][typescript][typescriptreact][jsx-tags][html][css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[powershell]": {
+    "editor.defaultFormatter": "ms-vscode.powershell",
+    "files.eol": "\r\n"
+  },
+  "powershell.pester.codeLens": false,
+  "powershell.promptToUpdatePowerShell": false,
+
+  "[terraform][terraform-vars]": {
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+
+  "[hcl]": {
+    "editor.defaultFormatter": "hashicorp.hcl"
+  },
+
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+    "files.trimTrailingWhitespace": false
+  },
+  "markdownlint.config": {
+    "default": true,
+    "MD014": false,
+    "MD028": false,
+    "MD024": { "siblings_only": true }
+  },
+
+  "[json][jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/awslabs/goformation/master/schema/cloudformation.schema.json": [
+      "*.cf.yaml",
+      "*.cf.yml",
+      "cfn/*.yaml",
+      "cfn/*.yml",
+      "cf-*.yaml",
+      "cf-*.yml",
+      "cloudformation/*.yaml",
+      "cloudformation/*.yml",
+      "cloudformation*.yaml",
+      "cloudformation*.yml"
+    ]
+  },
+  "yaml.validate": false,
+  "yaml.customTags": [
+    "!And",
+    "!And sequence",
+    "!If",
+    "!If sequence",
+    "!Not",
+    "!Not sequence",
+    "!Equals",
+    "!Equals sequence",
+    "!Or",
+    "!Or sequence",
+    "!FindInMap",
+    "!FindInMap sequence",
+    "!Base64",
+    "!Join",
+    "!Join sequence",
+    "!Cidr",
+    "!Ref",
+    "!Sub",
+    "!Sub sequence",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!ImportValue sequence",
+    "!Select",
+    "!Select sequence",
+    "!Split",
+    "!Split sequence"
+  ],
+  "cfnLint.validateUsingJsonSchema": true,
+
+  "[shellscript]": {
+    "editor.insertSpaces": false,
+    "editor.defaultFormatter": "timonwong.shellcheck",
+    "files.eol": "\n"
+  },
+
+  "[makefile]": {
+    "editor.insertSpaces": false,
+    "files.eol": "\n"
+  },
+  "makefile.configureOnOpen": false,
+
+  "aws.telemetry": false,
+  "redhat.telemetry.enabled": false
+}
