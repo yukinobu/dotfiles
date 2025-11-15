@@ -59,6 +59,7 @@
         // "kddejong.vscode-cfn-lint",
         // "marp-team.marp-vscode",
         // "ms-vscode.PowerShell",
+        // "openai.chatgpt",
       ]
     }
   }
