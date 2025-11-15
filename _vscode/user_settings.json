@@ -1,4 +1,8 @@
 {
+  "chat.disableAIFeatures": true,
+  "chat.agent.enabled": false,
+  "chat.agentSessionsViewLocation": "disabled",
+
   "editor.acceptSuggestionOnEnter": "on",
   "editor.accessibilitySupport": "off",
   "editor.bracketPairColorization.enabled": true,
