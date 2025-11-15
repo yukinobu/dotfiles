@@ -39,7 +39,6 @@
         "Gruntfuggly.todo-tree",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "hashicorp.terraform",
         "ms-python.black-formatter",
         "ms-python.debugpy",
         "ms-python.flake8",
@@ -51,6 +50,15 @@
         "oderwat.indent-rainbow",
         "redhat.vscode-yaml",
         "timonwong.shellcheck"
+        // "amazonwebservices.aws-toolkit-vscode",
+        // "aws-scripting-guy.cform",
+        // "boto3typed.boto3-ide",
+        // "dbaeumer.vscode-eslint",
+        // "docker.docker",
+        // "hashicorp.terraform",
+        // "kddejong.vscode-cfn-lint",
+        // "marp-team.marp-vscode",
+        // "ms-vscode.PowerShell",
       ]
     }
   }
