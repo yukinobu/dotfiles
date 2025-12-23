@@ -23,7 +23,7 @@
 [init]
 	defaultBranch = main
 [log]
-	date = iso-local
+	date = iso
 [commit]
 	verbose = true
 [pull]
