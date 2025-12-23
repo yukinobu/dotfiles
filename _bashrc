@@ -210,3 +210,5 @@ if [[ $(uname) =~ ^CYGWIN ]]; then
 	alias gftx=gftx
 	alias gfxt=gftx
 fi
+
+export TZ="Asia/Tokyo"
