@@ -57,4 +57,5 @@
 	format = %C(auto)%h %gd[%ar]: %gs (%s)
 
 [alias]
-	now = "!__f() { \\git commit --all --message \"now: auto commit on $(\\date '+%Y-%m-%d %H:%M [%Z]') by ${USER} at $(hostname)\"; }; __f"
+	now = "!__f() { \\git commit --message \"now: auto commit on $(\\date '+%Y-%m-%d %H:%M [%Z]') by ${USER} at $(hostname)\"; }; __f"
+	nowall = "!__f() { \\git commit --all --message \"now: auto commit on $(\\date '+%Y-%m-%d %H:%M [%Z]') by ${USER} at $(hostname)\"; }; __f"
