@@ -3,7 +3,12 @@
 {
   "name": "Ubuntu",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "runArgs": ["--name", "devcontainer-${localWorkspaceFolderBasename}"],
+  "runArgs": [
+    "--name",
+    "devcontainer-${localWorkspaceFolderBasename}",
+    "--add-host",
+    "host.docker.internal:host-gateway"
+  ],
   "build": {
     "dockerfile": "Dockerfile"
   },
