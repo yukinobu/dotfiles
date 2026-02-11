@@ -3,7 +3,9 @@ source $VIMRUNTIME/defaults.vim
 
 " ペーストできない現象の抑止 https://qiita.com/VA_nakatsu/items/b92771fcda9023cb2bb6
 set mouse=
-set clipboard=unnamed,autoselect
+if has('clipboard')
+  set clipboard=unnamed
+endif
 
 " 文字コードの自動認識 http://www.kawaz.jp/pukiwiki/?vim#cb691f26
 if &encoding !=# 'utf-8'
@@ -36,8 +38,15 @@ if has('iconv')
       set fileencodings-=euc-jp
       set fileencodings-=euc-jisx0213
       set fileencodings-=eucjp-ms
-      let &encoding = s:enc_euc
-      let &fileencoding = s:enc_euc
+      try
+        let &encoding = s:enc_euc
+      catch /^Vim\%((\a\+)\)\=:E474/
+        " Some Vim builds cannot use eucjp-ms/euc-jisx0213 as 'encoding'.
+      endtry
+      try
+        let &fileencoding = s:enc_euc
+      catch /^Vim\%((\a\+)\)\=:E474/
+      endtry
     else
       let &fileencodings = &fileencodings .','. s:enc_euc
     endif
