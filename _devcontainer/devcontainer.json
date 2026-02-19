@@ -23,7 +23,7 @@
     "ghcr.io/devcontainers/features/python:1": {
       "installTools": true,
       "toolsToInstall": "flake8,autopep8,black,yapf,mypy,pydocstyle,pycodestyle,bandit,pipenv,virtualenv,pytest,pylint",
-      "version": "3.13"
+      "version": "3.14"
     },
     "ghcr.io/guiyomh/features/vim:0": {},
     "ghcr.io/christophermacgown/devcontainer-features/direnv:1": {}
