@@ -12,5 +12,8 @@ ln -fs ~/local/dotfiles/_bashrc_safe ~/.bashrc_safe
 ln -fs ~/local/dotfiles/_gitignore ~/.gitignore
 ln -fs ~/local/dotfiles/_vimrc ~/.vimrc
 
+# make devenv as needed
+[[ -f Makefile ]] && ( make -f Makefile -q devenv >/dev/null 2>&1; [[ $? -ne 2 ]] && make -f Makefile devenv ) || true
+
 # shellcheck disable=SC2154
 [[ -f ${containerWorkspaceFolder}.envrc ]] && direnv allow "${containerWorkspaceFolder}" || true
