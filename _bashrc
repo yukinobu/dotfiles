@@ -211,4 +211,10 @@ if [[ $(uname) =~ ^CYGWIN ]]; then
 	alias gfxt=gftx
 fi
 
+# enable fzf
+if [[ -x $(command -v fzf) && ! $(uname) =~ ^CYGWIN ]]; then
+	eval "$(fzf --bash)"
+	export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --exact"
+fi
+
 export TZ="Asia/Tokyo"
