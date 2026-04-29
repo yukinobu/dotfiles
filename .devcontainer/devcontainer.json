@@ -26,7 +26,8 @@
       "version": "3.14"
     },
     "ghcr.io/guiyomh/features/vim:0": {},
-    "ghcr.io/christophermacgown/devcontainer-features/direnv:1": {}
+    "ghcr.io/christophermacgown/devcontainer-features/direnv:1": {},
+    "ghcr.io/jsburckhardt/devcontainer-features/codex:1": {}
   },
   "onCreateCommand": "/bin/bash .devcontainer/onCreateCommand.sh",
   "updateContentCommand": "/bin/bash .devcontainer/updateContentCommand.sh",
