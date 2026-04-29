@@ -20,3 +20,16 @@ ln -is ~/local/dotfiles/_gitignore ~/.gitignore
 ln -is ~/local/dotfiles/_vimrc ~/.vimrc
 cp -i ~/local/dotfiles/_npmrc ~/.npmrc
 ```
+
+## copy my dev container into another local git repository
+
+```bash
+# Run in a Git worktree
+if [[ -e .devcontainer || -L .devcontainer ]]; then
+    echo ".devcontainer already exists" >&2
+else
+    exclude="$(git rev-parse --git-path info/exclude)"
+    grep -qxF ".devcontainer/" "${exclude}" || echo ".devcontainer/" >> "${exclude}"
+    cp -ir ~/local/dotfiles/_devcontainer .devcontainer
+fi
+```
