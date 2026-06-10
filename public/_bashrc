@@ -171,7 +171,7 @@ fi
 # Use Windows's ssh-agent instead of WSL's
 if [[ -f /proc/sys/fs/binfmt_misc/WSLInterop || -f /proc/sys/fs/binfmt_misc/WSLInterop-late ]]; then
 	export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
-	! ss -a | grep -q $SSH_AUTH_SOCK && rm -f $SSH_AUTH_SOCK && (setsid nohup socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:$HOME/.ssh/wsl2-ssh-pageant.exe >/dev/null 2>&1 &)
+	! ss -x | grep -q $SSH_AUTH_SOCK && rm -f $SSH_AUTH_SOCK && (setsid nohup socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:$HOME/.ssh/wsl2-ssh-pageant.exe >/dev/null 2>&1 &)
 fi
 
 # shellcheck source=/dev/null
