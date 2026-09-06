@@ -1,4 +1,6 @@
-#!/usr/bin/env -S bash -euET -o pipefail -O inherit_errexit
+#!/usr/bin/env bash
+set -euET -o pipefail
+shopt -s inherit_errexit
 
 catch() {
 	echo "[ERROR] returned a non-zero exit status $? on $0:$1" "$(\date +'[%F %T %Z]')" >&2
