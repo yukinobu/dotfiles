@@ -12,6 +12,9 @@ ln -fs ~/local/dotfiles/_bashrc_safe ~/.bashrc_safe
 ln -fs ~/local/dotfiles/_gitignore ~/.gitignore
 ln -fs ~/local/dotfiles/_vimrc ~/.vimrc
 
+# install Codex CLI
+curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
+
 # make devenv as needed
 [[ -f Makefile ]] && ( make -f Makefile -q devenv >/dev/null 2>&1; [[ $? -ne 2 ]] && make -f Makefile devenv ) || true
 
