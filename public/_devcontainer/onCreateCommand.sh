@@ -12,6 +12,8 @@ ln -fs ~/local/dotfiles/_bashrc_safe ~/.bashrc_safe
 ln -fs ~/local/dotfiles/_gitignore ~/.gitignore
 ln -fs ~/local/dotfiles/_vimrc ~/.vimrc
 
+git config --global --replace-all credential.helper ""
+
 # install Codex CLI
 curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
 
