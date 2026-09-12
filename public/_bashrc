@@ -13,7 +13,7 @@ shopt -u histappend
 export HISTSIZE=999999
 export HISTFILESIZE=999999
 export HISTTIMEFORMAT='%Y/%m/%d %H:%M:%S [%Z] '
-export HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoreboth
+export HISTCONTROL="${HISTCONTROL:+${HISTCONTROL}:}ignoreboth"
 
 shopt -s nocaseglob
 # https://unix.stackexchange.com/questions/42629/bash-how-do-i-move-my-cursor-to-the-left-a-word-at-a-time
