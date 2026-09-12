@@ -20,5 +20,4 @@ curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
 # make devenv as needed
 [[ -f Makefile ]] && ( make -f Makefile -q devenv >/dev/null 2>&1; [[ $? -ne 2 ]] && make -f Makefile devenv ) || true
 
-# shellcheck disable=SC2154
-[[ -f ${containerWorkspaceFolder}.envrc ]] && direnv allow "${containerWorkspaceFolder}" || true
+[[ -f .envrc ]] && direnv allow . || true
