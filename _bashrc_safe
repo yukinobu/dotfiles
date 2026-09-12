@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-set -euET -o pipefail
-shopt -s inherit_errexit
+#set -euET -o pipefail
+#shopt -s inherit_errexit
 
 # usage: bash --rcfile ~/.bashrc_safe -i
 
