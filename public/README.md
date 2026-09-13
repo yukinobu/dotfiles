@@ -19,6 +19,7 @@ cp -i ~/local/dotfiles/_gitconfig ~/.gitconfig
 ln -is ~/local/dotfiles/_gitignore ~/.gitignore
 ln -is ~/local/dotfiles/_vimrc ~/.vimrc
 cp -i ~/local/dotfiles/_npmrc ~/.npmrc
+ln -is ~/local/dotfiles/_screenrc ~/.screenrc
 ```
 
 ## copy my dev container into another local git repository
