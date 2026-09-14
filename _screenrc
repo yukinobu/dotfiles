@@ -1,1 +1,4 @@
+termcapinfo xterm* ti@:te@
+defscrollback 100000
+altscreen on
 cjkwidth off
