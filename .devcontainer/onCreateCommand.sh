@@ -7,15 +7,15 @@ catch() {
 }
 trap 'catch ${LINENO[0]}' ERR
 
+# install Codex CLI
+curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
+
 ( mkdir -p ~/local && cd "$_" && if [[ -d dotfiles ]]; then cd dotfiles && git pull --rebase; else git clone -c core.autocrlf=input --filter=tree:0 https://github.com/yukinobu/dotfiles.git; fi )
 grep -qxF '. ~/local/dotfiles/_bashrc' ~/.bashrc || echo '. ~/local/dotfiles/_bashrc' >> ~/.bashrc
 
 ln -fs ~/local/dotfiles/_bashrc_safe ~/.bashrc_safe
 ln -fs ~/local/dotfiles/_gitignore ~/.gitignore
 ln -fs ~/local/dotfiles/_vimrc ~/.vimrc
-
-# install Codex CLI
-curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
 
 # make devenv as needed
 [[ -f Makefile ]] && ( make -f Makefile -q devenv >/dev/null 2>&1; [[ $? -ne 2 ]] && make -f Makefile devenv ) || true
