@@ -57,9 +57,9 @@ fi
 # git
 if [[ $(uname) =~ ^CYGWIN ]]; then
 	# shellcheck source=/dev/null
-	if [[ -f $(cygpath -au 'C:\Program Files\Git\mingw64\share\git\completion\git-prompt.sh') ]]; then
-		source "$(cygpath -au 'C:\Program Files\Git\mingw64\share\git\completion\git-prompt.sh')"
-		source "$(cygpath -au 'C:\Program Files\Git\mingw64\share\git\completion\git-completion.bash')"
+	if [[ -f $(cygpath -au 'C:\Program Files\Git\ucrt64\share\git\completion\git-prompt.sh') ]]; then
+		source "$(cygpath -au 'C:\Program Files\Git\ucrt64\share\git\completion\git-prompt.sh')"
+		source "$(cygpath -au 'C:\Program Files\Git\ucrt64\share\git\completion\git-completion.bash')"
 		function __git_ps1_cygwin() {
 			local __alias_backup="${BASH_ALIASES[git]}"
 			unalias git
@@ -79,11 +79,11 @@ if [[ $(uname) =~ ^CYGWIN ]]; then
 		function __git_ps1() { :; }
 	fi
 elif [[ $(uname) =~ ^MINGW ]]; then
-	if [[ -f '/c/Program Files/Git/mingw64/share/git/completion/git-prompt.sh' ]]; then
+	if [[ -f '/c/Program Files/Git/ucrt64/share/git/completion/git-prompt.sh' ]]; then
 		# shellcheck source=/dev/null
-		source '/c/Program Files/Git/mingw64/share/git/completion/git-prompt.sh'
+		source '/c/Program Files/Git/ucrt64/share/git/completion/git-prompt.sh'
 		# shellcheck source=/dev/null
-		source '/c/Program Files/Git/mingw64/share/git/completion/git-completion.bash'
+		source '/c/Program Files/Git/ucrt64/share/git/completion/git-completion.bash'
 	fi
 fi
 export GIT_PS1_SHOWDIRTYSTATE=1
