@@ -39,8 +39,10 @@ help:
 	fi
 
 publish-main: .verify-main
-	@current=$$(git branch --show-current); \
-	git switch $(MAIN_BRANCH); \
-	git merge --ff-only $(GENERATED_BRANCH); \
-	git switch $$current; \
+	@current=$$(git branch --show-current) || exit $$?; \
+	git switch $(MAIN_BRANCH) || exit $$?; \
+	merge_status=0; \
+	git merge --ff-only $(GENERATED_BRANCH) || merge_status=$$?; \
+	git switch "$$current" || exit $$?; \
+	test "$$merge_status" -eq 0 || exit "$$merge_status"; \
 	echo "必要に応じて git push origin $(MAIN_BRANCH) $(DEV_BRANCH) を実行してください"
