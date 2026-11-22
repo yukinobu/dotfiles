@@ -56,28 +56,32 @@ fi
 
 # git
 if [[ $(uname) =~ ^CYGWIN ]]; then
-	# shellcheck source=/dev/null
-	if [[ -f $(cygpath -au 'C:\Program Files\Git\mingw64\share\git\completion\git-prompt.sh') ]]; then
-		source "$(cygpath -au 'C:\Program Files\Git\mingw64\share\git\completion\git-prompt.sh')"
-		source "$(cygpath -au 'C:\Program Files\Git\mingw64\share\git\completion\git-completion.bash')"
-		function __git_ps1_cygwin() {
-			local __alias_backup="${BASH_ALIASES[git]}"
-			unalias git
+	if __wingit_path=$(cygpath -au 'C:\Program Files\Git\cmd\git.exe') && [[ -x $__wingit_path ]]; then
+		function __wingit() {
+			HOME="${USERPROFILE:-$HOME}" TZ=JST-9 "$__wingit_path" "$@"
+		}
+		if __git_exec_path=$(__wingit --exec-path 2>/dev/null) && [[ -n $__git_exec_path ]]; then
+			__git_prefix=${__git_exec_path%/libexec/git-core}
+			__git_prefix=${__git_prefix%/lib/git-core}
+			if __git_completion_dir=$(cygpath -au "$__git_prefix/share/git/completion"); then
+				# shellcheck source=/dev/null
+				[[ ! -r $__git_completion_dir/git-prompt.sh ]] || source "$__git_completion_dir/git-prompt.sh"
+				# shellcheck source=/dev/null
+				[[ ! -r $__git_completion_dir/git-completion.bash ]] || source "$__git_completion_dir/git-completion.bash"
+			fi
+		fi
+		unset __git_exec_path __git_prefix __git_completion_dir
+		alias git=__wingit
+	fi
+	function __git_ps1_cygwin() {
+		if declare -F __git_ps1 >/dev/null; then
+			local __alias_backup="${BASH_ALIASES[git]-}"
+			unalias git 2>/dev/null || :
 			__git_ps1 "$@"
 			# shellcheck disable=SC2139
-			alias git="${__alias_backup}"
-		}
-		function __wingit() {
-			local __home_backup="${HOME}"
-			HOME="${USERPROFILE}"
-			TZ=JST-9 /cygdrive/c/Program\ Files/Git/bin/git "$@"
-			HOME="${__home_backup}"
-		}
-		alias git=__wingit
-	else
-		function __git_ps1_cygwin() { :; }
-		function __git_ps1() { :; }
-	fi
+			[[ -z $__alias_backup ]] || alias git="$__alias_backup"
+		fi
+	}
 elif [[ $(uname) =~ ^MINGW ]]; then
 	if [[ -f '/c/Program Files/Git/mingw64/share/git/completion/git-prompt.sh' ]]; then
 		# shellcheck source=/dev/null
