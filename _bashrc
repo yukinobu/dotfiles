@@ -56,10 +56,13 @@ fi
 
 # git
 if [[ $(uname) =~ ^CYGWIN ]]; then
-	# shellcheck source=/dev/null
-	if [[ -f $(cygpath -au 'C:\Program Files\Git\ucrt64\share\git\completion\git-prompt.sh') ]]; then
-		source "$(cygpath -au 'C:\Program Files\Git\ucrt64\share\git\completion\git-prompt.sh')"
-		source "$(cygpath -au 'C:\Program Files\Git\ucrt64\share\git\completion\git-completion.bash')"
+	if __git_completion_dir=$(/cygdrive/c/Program\ Files/Git/bin/git --exec-path 2>/dev/null) &&
+		__git_completion_dir=$(cygpath -au "${__git_completion_dir%/libexec/git-core}/share/git/completion") &&
+		[[ -f "$__git_completion_dir/git-prompt.sh" ]]; then
+		# shellcheck source=/dev/null
+		source "$__git_completion_dir/git-prompt.sh"
+		# shellcheck source=/dev/null
+		source "$__git_completion_dir/git-completion.bash"
 		function __git_ps1_cygwin() {
 			local __alias_backup="${BASH_ALIASES[git]}"
 			unalias git
@@ -79,13 +82,17 @@ if [[ $(uname) =~ ^CYGWIN ]]; then
 		function __git_ps1() { :; }
 	fi
 elif [[ $(uname) =~ ^MINGW ]]; then
-	if [[ -f '/c/Program Files/Git/ucrt64/share/git/completion/git-prompt.sh' ]]; then
+	# Git Bash の起動処理が取得済みなら git.exe の再起動を避ける。
+	if __git_completion_dir="${GIT_EXEC_PATH:-$(command git --exec-path 2>/dev/null)}" &&
+		__git_completion_dir="${__git_completion_dir%/libexec/git-core}/share/git/completion" &&
+		[[ -f "$__git_completion_dir/git-prompt.sh" ]]; then
 		# shellcheck source=/dev/null
-		source '/c/Program Files/Git/ucrt64/share/git/completion/git-prompt.sh'
+		source "$__git_completion_dir/git-prompt.sh"
 		# shellcheck source=/dev/null
-		source '/c/Program Files/Git/ucrt64/share/git/completion/git-completion.bash'
+		source "$__git_completion_dir/git-completion.bash"
 	fi
 fi
+unset __git_completion_dir
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUPSTREAM=1
 export GIT_PS1_SHOWUNTRACKEDFILES=
