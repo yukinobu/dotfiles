@@ -169,6 +169,11 @@ if [[ -x $(command -v codex) ]]; then
 	eval "$(codex completion bash)"
 fi
 
+if [[ -x $(command -v opencode) ]]; then
+	# shellcheck source=/dev/null
+	source <(opencode --completions bash)
+fi
+
 # ssh
 # Use Windows's OpenSSH instead of Cygwin's
 if [[ $(uname -s) =~ ^CYGWIN ]]; then
