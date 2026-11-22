@@ -16,9 +16,6 @@
 	commentChar = ";"
 [safe]
 	directory = *
-[credential]
-	helper = /mnt/c/Program\\ Files/Git/ucrt64/bin/git-credential-manager.exe
-	helper = wincred
 
 [init]
 	defaultBranch = main
