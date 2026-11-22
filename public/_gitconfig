@@ -17,7 +17,7 @@
 [safe]
 	directory = *
 [credential]
-	helper = /mnt/c/Program\\ Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe
+	helper = /mnt/c/Program\\ Files/Git/ucrt64/bin/git-credential-manager.exe
 	helper = wincred
 
 [init]
