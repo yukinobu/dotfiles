@@ -27,21 +27,16 @@ ln -is ~/local/dotfiles/_screenrc ~/.screenrc
 On Windows, enable Git Credential Manager (GCM) in the Git for Windows
 installer to configure the system helper `manager`.
 
-To reuse Windows GCM from WSL, set the helper in WSL's XDG Git config so
-it survives updates to `~/.gitconfig`. Run this in WSL for a default x64
-installation of Git for Windows 2.56 or later. For other versions,
-architectures, or installation locations, check the executable path in the
+In WSL, the shared config uses Windows GCM when the default x64 Git for
+Windows 2.56+ executable is available. If HTTPS Git commands started prompting
+for a username after an update, replace the old dotfiles `[credential]` block
+in `~/.gitconfig` with the block from the updated `_gitconfig`, or add it if
+it is missing. If WSL already has the same GCM path in its XDG Git config,
+keep a single entry for that executable.
+
+For another installation path, configure the helper in WSL using the
 [GCM WSL setup guide](https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/wsl.md).
-
-```bash
-wsl_git_config="${XDG_CONFIG_HOME:-$HOME/.config}/git/config"
-mkdir -p "$(dirname "$wsl_git_config")" &&
-    git config --file "$wsl_git_config" credential.helper '/mnt/c/Program\ Files/Git/ucrt64/bin/git-credential-manager.exe'
-```
-
-If you copied an older `_gitconfig`, remove the `/mnt/c/...` and `wincred`
-helper entries supplied by dotfiles from your installed `~/.gitconfig`.
-Check the configured helpers and their source files in each environment.
+Use this command to see the helpers and their source files.
 
 ```bash
 git config --show-origin --get-all credential.helper
