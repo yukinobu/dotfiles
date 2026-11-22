@@ -9,7 +9,7 @@ GENERATED_BRANCH := generated-main
 
 help:
 	@echo "Available targets:"
-	@echo "  publish-main  public/ から main を生成して fast-forward する"
+	@echo "  publish-main  public/ から main を生成する（必要なら履歴を巻き戻す）"
 
 .check-clean:
 	@test -z "$$(git status --porcelain)" || { \
@@ -30,19 +30,13 @@ help:
 	echo "$(GENERATED_BRANCH) -> $$commit"
 
 .verify-main: .generate-main
-	@git diff --stat $(MAIN_BRANCH) $(GENERATED_BRANCH); \
-	if git merge-base --is-ancestor $(MAIN_BRANCH) $(GENERATED_BRANCH); then \
-		echo "$(MAIN_BRANCH) は $(GENERATED_BRANCH) へ fast-forward 可能です"; \
-	else \
-		echo "$(MAIN_BRANCH) は $(GENERATED_BRANCH) へ fast-forward できません"; \
-		exit 1; \
-	fi
+	@git diff --stat $(MAIN_BRANCH) $(GENERATED_BRANCH)
 
 publish-main: .verify-main
-	@current=$$(git branch --show-current) || exit $$?; \
-	git switch $(MAIN_BRANCH) || exit $$?; \
-	merge_status=0; \
-	git merge --ff-only $(GENERATED_BRANCH) || merge_status=$$?; \
-	git switch "$$current" || exit $$?; \
-	test "$$merge_status" -eq 0 || exit "$$merge_status"; \
-	echo "必要に応じて git push origin $(MAIN_BRANCH) $(DEV_BRANCH) を実行してください"
+	@push_command="git push origin $(MAIN_BRANCH)"; \
+	if ! git merge-base --is-ancestor $(MAIN_BRANCH) $(GENERATED_BRANCH); then \
+		push_command="git push --force-with-lease origin $(MAIN_BRANCH)"; \
+	fi; \
+	git branch -f $(MAIN_BRANCH) $(GENERATED_BRANCH) || exit $$?; \
+	echo "必要に応じて $$push_command を実行してください"; \
+	echo "必要に応じて git push origin $(DEV_BRANCH) を実行してください"
