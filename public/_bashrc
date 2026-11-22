@@ -26,13 +26,20 @@ fi
 
 export EDITOR=vim
 
+__shell_system=$(uname -s)
+__git_bash_system='^(MINGW|UCRT64|CLANGARM64)'
+
 alias date="\\date +'%F(%a) %T.%N [%Z]'"
 alias wget='\wget -t 0 -S -c -T 60 --no-use-server-timestamps'
 alias grep='\grep --color -a -i'
 alias rg='\rg --text --ignore-case --glob-case-insensitive'
-# shellcheck disable=SC2139
-[[ $(uname) =~ ^CYGWIN || $(uname) =~ ^MINGW ]] && alias rg="${BASH_ALIASES[rg]} --path-separator='\x2F'"
-[[ $(uname) =~ ^CYGWIN || $(uname) =~ ^MINGW ]] && alias fd='\fd --path-separator /'
+if [[ $__shell_system =~ ^CYGWIN || $__shell_system =~ $__git_bash_system ]]; then
+	# shellcheck disable=SC2139
+	alias rg="${BASH_ALIASES[rg]} --path-separator='\x2F'"
+	alias fd='\fd --path-separator /'
+else
+	alias s='\screen -UDR'
+fi
 alias ge='\grep -R --color -H -n -a -i -E'
 alias gf='\grep -R --color -H -n -a -i -F'
 alias xz='\xz -9'
@@ -40,7 +47,6 @@ alias ip='\ip -s -c'
 alias ssh='\ssh -o ServerAliveInterval=55'
 # shellcheck disable=SC2139
 alias ts="\\ts $(echo -e '\e[33m')'[%F %H:%M:%.S %z]'$(echo -e '\e[m') | grep --color=always -iE '\[ERROR\]|error|retry|'"
-[[ $(uname) =~ ^CYGWIN || $(uname) =~ ^MINGW ]] || alias s='\screen -UDR'
 
 # "start" on Windows cygwin
 [[ $(uname) =~ ^CYGWIN ]] && alias start=cygstart
@@ -55,23 +61,14 @@ if [[ -f /proc/sys/fs/binfmt_misc/WSLInterop || -f /proc/sys/fs/binfmt_misc/WSLI
 fi
 
 # git
-if [[ $(uname) =~ ^CYGWIN ]]; then
-	if __wingit_path=$(cygpath -au 'C:\Program Files\Git\cmd\git.exe') && [[ -x $__wingit_path ]]; then
+__git_exec_path=
+if [[ $__shell_system =~ ^CYGWIN ]]; then
+	__wingit_path=$(cygpath -au 'C:\Program Files\Git\cmd\git.exe') || __wingit_path=
+	if [[ -x $__wingit_path ]]; then
 		function __wingit() {
 			HOME="${USERPROFILE:-$HOME}" TZ=JST-9 "$__wingit_path" "$@"
 		}
-		if __git_exec_path=$(__wingit --exec-path 2>/dev/null) && [[ -n $__git_exec_path ]]; then
-			__git_prefix=${__git_exec_path%/libexec/git-core}
-			__git_prefix=${__git_prefix%/lib/git-core}
-			if __git_completion_dir=$(cygpath -au "$__git_prefix/share/git/completion"); then
-				# shellcheck source=/dev/null
-				[[ ! -r $__git_completion_dir/git-prompt.sh ]] || source "$__git_completion_dir/git-prompt.sh"
-				# shellcheck source=/dev/null
-				[[ ! -r $__git_completion_dir/git-completion.bash ]] || source "$__git_completion_dir/git-completion.bash"
-			fi
-		fi
-		unset __git_exec_path __git_prefix __git_completion_dir
-		alias git=__wingit
+		__git_exec_path=$(__wingit --exec-path 2>/dev/null) || __git_exec_path=
 	fi
 	function __git_ps1_cygwin() {
 		if declare -F __git_ps1 >/dev/null; then
@@ -82,14 +79,29 @@ if [[ $(uname) =~ ^CYGWIN ]]; then
 			[[ -z $__alias_backup ]] || alias git="$__alias_backup"
 		fi
 	}
-elif [[ $(uname) =~ ^MINGW ]]; then
-	if [[ -f '/c/Program Files/Git/mingw64/share/git/completion/git-prompt.sh' ]]; then
+elif [[ $__shell_system =~ $__git_bash_system ]]; then
+	__git_exec_path=$(command git --exec-path 2>/dev/null) || __git_exec_path=
+fi
+
+if [[ -n $__git_exec_path ]]; then
+	# Match Git Bash's lookup for the prefix enclosing Git's libexec directory.
+	__git_prefix=${__git_exec_path%/libexec/git-core}
+	__git_prefix=${__git_prefix%/lib/git-core}
+	if __git_completion_dir=$(cygpath -au "$__git_prefix/share/git/completion"); then
 		# shellcheck source=/dev/null
-		source '/c/Program Files/Git/mingw64/share/git/completion/git-prompt.sh'
+		[[ ! -r $__git_completion_dir/git-prompt.sh ]] || source "$__git_completion_dir/git-prompt.sh"
 		# shellcheck source=/dev/null
-		source '/c/Program Files/Git/mingw64/share/git/completion/git-completion.bash'
+		[[ ! -r $__git_completion_dir/git-completion.bash ]] || source "$__git_completion_dir/git-completion.bash"
 	fi
 fi
+
+if [[ $__shell_system =~ ^CYGWIN && -x $__wingit_path ]]; then
+	alias git=__wingit
+elif [[ $__shell_system =~ $__git_bash_system ]] && ! declare -F __git_ps1 >/dev/null; then
+	function __git_ps1() { :; }
+fi
+unset __git_exec_path __git_prefix __git_completion_dir
+
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUPSTREAM=1
 export GIT_PS1_SHOWUNTRACKEDFILES=
@@ -102,10 +114,10 @@ __last_error_prompt() {
 	return $EXIT_STATUS
 }
 export PROMPT_DIRTRIM=1
-if [[ $(uname) =~ ^CYGWIN ]]; then
+if [[ $__shell_system =~ ^CYGWIN ]]; then
 	# shellcheck disable=SC2154
 	export PS1='\[\033[1;31m\]$(__last_error_prompt)\[\033[00m\]${VIRTUAL_ENV_PROMPT:-}\[\e]0;\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[0;36m\]\h\[\033[90m\]:\[\033[1;34m\]\w\[\033[1;31m\]$(__git_ps1_cygwin)\[\033[00m\]\$ '
-elif [[ $(uname) =~ ^MINGW ]]; then
+elif [[ $__shell_system =~ $__git_bash_system ]]; then
 	# shellcheck disable=SC2154
 	export PS1='\[\033[1;31m\]$(__last_error_prompt)\[\033[00m\]${VIRTUAL_ENV_PROMPT:-}\[\e]0;\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[0;36m\]\h\[\033[90m\]:\[\033[1;34m\]\w\[\033[1;31m\]$(__git_ps1)\[\033[00m\]\$ '
 elif [[ ${REMOTE_CONTAINERS:-false} == true ]]; then
@@ -117,6 +129,7 @@ else
 		export PS1='\[\033[1;31m\]$(__last_error_prompt)\[\033[00m\]${VIRTUAL_ENV_PROMPT:-}\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[1;32m\]\u\[\033[0;90m\]@\[\033[0;36m\]\h\[\033[90m\]:\[\033[1;34m\]\w\[\033[1;31m\]$(__git_ps1)\[\033[00m\]\$ '
 	fi
 fi
+unset __shell_system __git_bash_system
 
 _retry() {
 	local delay='10'
