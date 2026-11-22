@@ -56,7 +56,10 @@ fi
 
 # git
 if [[ $(uname) =~ ^CYGWIN ]]; then
-	if __git_completion_dir=$(/cygdrive/c/Program\ Files/Git/bin/git --exec-path 2>/dev/null) &&
+	function __wingit() {
+		HOME="${USERPROFILE}" TZ=JST-9 /cygdrive/c/Program\ Files/Git/bin/git "$@"
+	}
+	if __git_completion_dir=$(__wingit --exec-path 2>/dev/null) &&
 		__git_completion_dir=$(cygpath -au "${__git_completion_dir%/libexec/git-core}/share/git/completion") &&
 		[[ -f "$__git_completion_dir/git-prompt.sh" ]]; then
 		# shellcheck source=/dev/null
@@ -69,12 +72,6 @@ if [[ $(uname) =~ ^CYGWIN ]]; then
 			__git_ps1 "$@"
 			# shellcheck disable=SC2139
 			alias git="${__alias_backup}"
-		}
-		function __wingit() {
-			local __home_backup="${HOME}"
-			HOME="${USERPROFILE}"
-			TZ=JST-9 /cygdrive/c/Program\ Files/Git/bin/git "$@"
-			HOME="${__home_backup}"
 		}
 		alias git=__wingit
 	else
