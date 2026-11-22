@@ -25,8 +25,8 @@ help:
 	}
 
 .generate-main: .check-clean .check-dev-branch
-	@commit=$$(git subtree split --prefix=$(PUBLIC_DIR) $(DEV_BRANCH)); \
-	git branch -f $(GENERATED_BRANCH) $$commit; \
+	@commit=$$(git subtree split --prefix=$(PUBLIC_DIR) $(DEV_BRANCH)) && \
+	git branch -f $(GENERATED_BRANCH) "$$commit" && \
 	echo "$(GENERATED_BRANCH) -> $$commit"
 
 .verify-main: .generate-main
