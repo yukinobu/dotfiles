@@ -26,7 +26,10 @@ fi
 
 export EDITOR=vim
 
-alias date="\\date +'%F(%a) %T.%N [%Z]'"
+__dotfiles_date() {
+	command date "${@-+%F(%a) %T.%N [%Z]}"
+}
+alias date=__dotfiles_date
 alias wget='\wget -t 0 -S -c -T 60 --no-use-server-timestamps'
 alias grep='\grep --color -a -i'
 alias rg='\rg --text --ignore-case --glob-case-insensitive'
